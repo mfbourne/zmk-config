@@ -1,116 +1,69 @@
-{
-    "keyboard_name": "Breeze",
-    "manufacturer": "AfternoonLabs",
-    "url": "afternoonlabs.com/breeze",
-    "maintainer": "eithanshavit",
-    "usb": {
-        "vid": "0x616C",
-        "pid": "0x0001",
-        "device_version": "0.0.1"
-    },
-    "features": {
-        "bootmagic": true,
-        "mousekey": true,
-        "extrakey": true,
-        "console": true
-    },
-    "matrix_pins": {
-        "cols": ["B2", "D1", "D0", "D4", "C6", "D7", "E6", "B4", "B5"],
-        "rows": ["F4", "F5", "F6", "F7", "B1"]
-    },
-    "diode_direction": "COL2ROW",
-    "split": {
-        "enabled": true,
-        "soft_serial_pin": "D2"
-    },
-    "bootmagic": {
-        "matrix": [0, 5]
-    },
-    "processor": "atmega32u4",
-    "bootloader": "caterina",
-    "layouts": {
-        "LAYOUT": {
-            "layout": [
-                {"matrix": [0, 5], "x": 0, "y": 0.375},
-                {"matrix": [0, 4], "x": 1, "y": 0.375},
-                {"matrix": [0, 3], "x": 2, "y": 0.125},
-                {"matrix": [0, 2], "x": 3, "y": 0},
-                {"matrix": [0, 1], "x": 4, "y": 0.125},
-                {"matrix": [0, 0], "x": 5, "y": 0.25},
+/*
+ * Copyright (c) 2022 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
-                {"matrix": [5, 0], "x": 9.75, "y": 0.25},
-                {"matrix": [5, 1], "x": 10.75, "y": 0.125},
-                {"matrix": [5, 2], "x": 11.75, "y": 0},
-                {"matrix": [5, 3], "x": 12.75, "y": 0.125},
-                {"matrix": [5, 4], "x": 13.75, "y": 0.375},
-                {"matrix": [5, 5], "x": 14.75, "y": 0.375},
+#include <dt-bindings/zmk/matrix_transform.h>
 
-                {"matrix": [5, 6], "x": 16, "y": 0.375},
-                {"matrix": [5, 7], "x": 17, "y": 0.375},
-                {"matrix": [5, 8], "x": 18, "y": 0.375},
+/ {
+	chosen {
+		zmk,kscan = &kscan0;
+		zmk,matrix_transform = &default_transform;
+	};
 
-                {"matrix": [1, 5], "x": 0, "y": 1.375},
-                {"matrix": [1, 4], "x": 1, "y": 1.375},
-                {"matrix": [1, 3], "x": 2, "y": 1.125},
-                {"matrix": [1, 2], "x": 3, "y": 1},
-                {"matrix": [1, 1], "x": 4, "y": 1.125},
-                {"matrix": [1, 0], "x": 5, "y": 1.25},
+	default_transform: keymap_transform_0 {
+		compatible = "zmk,matrix-transform";
+		columns = <9>;
+		rows = <10>;
+// | SW6  | SW5  | SW4  | SW3  | SW2  | SW1  |                 | SW1  | SW2  | SW3  | SW4  | SW5  | SW6  | MC1  | MC2  | MC3  |
+// | SW12 | SW11 | SW10 | SW9  | SW8  | SW7  |                 | SW7  | SW8  | SW9  | SW10 | SW11 | SW12 | MC4  | MC5  | MC6  |
+// | SW18 | SW17 | SW16 | SW15 | SW14 | SW13 |                 | SW13 | SW14 | SW15 | SW16 | SW17 | SW18 |      |  ↑   |      |
+// | SW24 | SW23 | SW22 | SW21 | SW20 | SW19 |                 | SW19 | SW20 | SW21 | SW22 | SW23 | SW24 |  ←   |  ↓   |  →   |
+//                      | TC4  | TC3  | TC2  | TC1  |   | TC1  | TC2  | TC3  | TC4  |
+		map = <
+RC(0,5) RC(0,4) RC(0,3) RC(0,2) RC(0,1) RC(0,0)                 RC(5,0) RC(5,1) RC(5,2) RC(5,3) RC(5,4) RC(5,5) RC(5,6) RC(5,7) RC(5,8)
+RC(1,5) RC(1,4) RC(1,3) RC(1,2) RC(1,1) RC(1,0)                 RC(6,0) RC(6,1) RC(6,2) RC(6,3) RC(6,4) RC(6,5) RC(6,6) RC(6,7) RC(6,8)
+RC(2,5) RC(2,4) RC(2,3) RC(2,2) RC(2,1) RC(2,0)                 RC(7,0) RC(7,1) RC(7,2) RC(7,3) RC(7,4) RC(7,5)         RC(7,7)
+RC(3,5) RC(3,4) RC(3,3) RC(3,2) RC(3,1) RC(3,0)                 RC(8,0) RC(8,1) RC(8,2) RC(8,3) RC(8,4) RC(8,5) RC(8,6) RC(8,7) RC(8,8)
+                        RC(4,3) RC(4,2) RC(4,1) RC(4,0) RC(9,0) RC(9,1) RC(9,2) RC(9,3)
+		>;
+	};
 
-                {"matrix": [6, 0], "x": 9.75, "y": 1.25},
-                {"matrix": [6, 1], "x": 10.75, "y": 1.125},
-                {"matrix": [6, 2], "x": 11.75, "y": 1},
-                {"matrix": [6, 3], "x": 12.75, "y": 1.125},
-                {"matrix": [6, 4], "x": 13.75, "y": 1.375},
-                {"matrix": [6, 5], "x": 14.75, "y": 1.375},
+	five_column_transform: keymap_transform_1 {
+		compatible = "zmk,matrix-transform";
+		columns = <6>;
+		rows = <10>;
+// | SW6  | SW5  | SW4  | SW3  | SW2  | SW1  |                 | SW1  | SW2  | SW3  | SW4  | SW5  | SW6  |
+// | SW12 | SW11 | SW10 | SW9  | SW8  | SW7  |                 | SW7  | SW8  | SW9  | SW10 | SW11 | SW12 |
+// | SW18 | SW17 | SW16 | SW15 | SW14 | SW13 |                 | SW13 | SW14 | SW15 | SW16 | SW17 | SW18 |
+// | SW24 | SW23 | SW22 | SW21 | SW20 | SW19 |                 | SW19 | SW20 | SW21 | SW22 | SW23 | SW24 |
+//                      | TC4  | TC3  | TC2  | TC1  |   | TC1  | TC2  | TC3  | TC4  |
+		map = <
+RC(0,5) RC(0,4) RC(0,3) RC(0,2) RC(0,1) RC(0,0)                 RC(5,0) RC(5,1) RC(5,2) RC(5,3) RC(5,4) RC(5,5)
+RC(1,5) RC(1,4) RC(1,3) RC(1,2) RC(1,1) RC(1,0)                 RC(6,0) RC(6,1) RC(6,2) RC(6,3) RC(6,4) RC(6,5)
+RC(2,5) RC(2,4) RC(2,3) RC(2,2) RC(2,1) RC(2,0)                 RC(7,0) RC(7,1) RC(7,2) RC(7,3) RC(7,4) RC(7,5)
+RC(3,5) RC(3,4) RC(3,3) RC(3,2) RC(3,1) RC(3,0)                 RC(8,0) RC(8,1) RC(8,2) RC(8,3) RC(8,4) RC(8,5)
+                        RC(4,3) RC(4,2) RC(4,1) RC(4,0) RC(9,0) RC(9,1) RC(9,2) RC(9,3)
+		>;
+	};
 
-                {"matrix": [6, 6], "x": 16, "y": 1.375},
-                {"matrix": [6, 7], "x": 17, "y": 1.375},
-                {"matrix": [6, 8], "x": 18, "y": 1.375},
 
-                {"matrix": [2, 5], "x": 0, "y": 2.375},
-                {"matrix": [2, 4], "x": 1, "y": 2.375},
-                {"matrix": [2, 3], "x": 2, "y": 2.125},
-                {"matrix": [2, 2], "x": 3, "y": 2},
-                {"matrix": [2, 1], "x": 4, "y": 2.125},
-                {"matrix": [2, 0], "x": 5, "y": 2.25},
+	kscan0: kscan {
+		compatible = "zmk,kscan-gpio-matrix";
+		label = "KSCAN";
 
-                {"matrix": [7, 0], "x": 9.75, "y": 2.25},
-                {"matrix": [7, 1], "x": 10.75, "y": 2.125},
-                {"matrix": [7, 2], "x": 11.75, "y": 2},
-                {"matrix": [7, 3], "x": 12.75, "y": 2.125},
-                {"matrix": [7, 4], "x": 13.75, "y": 2.375},
-                {"matrix": [7, 5], "x": 14.75, "y": 2.375},
-
-                {"matrix": [7, 7], "x": 17, "y": 2.375},
-
-                {"matrix": [3, 5], "x": 0, "y": 3.375},
-                {"matrix": [3, 4], "x": 1, "y": 3.375},
-                {"matrix": [3, 3], "x": 2, "y": 3.125},
-                {"matrix": [3, 2], "x": 3, "y": 3},
-                {"matrix": [3, 1], "x": 4, "y": 3.125},
-                {"matrix": [3, 0], "x": 5, "y": 3.25},
-
-                {"matrix": [8, 0], "x": 9.75, "y": 3.25},
-                {"matrix": [8, 1], "x": 10.75, "y": 3.125},
-                {"matrix": [8, 2], "x": 11.75, "y": 3},
-                {"matrix": [8, 3], "x": 12.75, "y": 3.125},
-                {"matrix": [8, 4], "x": 13.75, "y": 3.375},
-                {"matrix": [8, 5], "x": 14.75, "y": 3.375},
-
-                {"matrix": [8, 6], "x": 16, "y": 3.375},
-                {"matrix": [8, 7], "x": 17, "y": 3.375},
-                {"matrix": [8, 8], "x": 18, "y": 3.375},
-
-                {"matrix": [4, 3], "x": 2.5, "y": 4.25},
-                {"matrix": [4, 2], "x": 3.5, "y": 4.25},
-                {"matrix": [4, 1], "x": 4.5, "y": 4.5},
-                {"matrix": [4, 0], "x": 6.25, "y": 3.75, "h": 2, "r": 30},
-
-                {"matrix": [9, 0], "x": 8.5, "y": 3.75, "h": 2, "r": -30},
-                {"matrix": [9, 1], "x": 10.25, "y": 4.5},
-                {"matrix": [9, 2], "x": 11.25, "y": 4.25},
-                {"matrix": [9, 3], "x": 12.25, "y": 4.25}
-            ]
-        }
-    }
-}
+		diode-direction = "col2row";
+		col-gpios
+			= <&pro_micro 16 GPIO_ACTIVE_HIGH>
+			, <&pro_micro 2  GPIO_ACTIVE_HIGH>
+			, <&pro_micro 3  GPIO_ACTIVE_HIGH>
+			, <&pro_micro 4  GPIO_ACTIVE_HIGH>
+			, <&pro_micro 5  GPIO_ACTIVE_HIGH>
+			, <&pro_micro 6  GPIO_ACTIVE_HIGH>
+			, <&pro_micro 7  GPIO_ACTIVE_HIGH>
+			, <&pro_micro 8  GPIO_ACTIVE_HIGH>
+			, <&pro_micro 9  GPIO_ACTIVE_HIGH>
+			;
+	};
+};
